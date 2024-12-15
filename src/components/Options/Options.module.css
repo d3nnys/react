@@ -1,0 +1,10 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.btn {
+  padding: 5px;
+  margin-bottom: 20px;
+}
