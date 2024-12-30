@@ -1,68 +1,52 @@
 import { useEffect, useState } from 'react';
-import Description from '../Description/Description.jsx';
+import ContactList from '../ContactList/ContactList.jsx';
+import SearchBox from '../SearchBox/SearchBox.jsx';
 import css from './App.module.css';
-import Options from '../Options/Options.jsx';
-import Feedback from '../Feedback/Feedback.jsx';
-import Notification from '../Notification/Notification.jsx';
+import ContactForm from '../ContactForm/ContactForm.jsx';
+// import { useEffect, useState } from 'react';
+
+const Contacts = [
+  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+];
 
 export default function App() {
-  const [clicks, setClicks] = useState(() => {
-    const savedClicks = localStorage.getItem('click-count');
+  const [contacts, setContacts] = useState(() => {
+    const savedContacts = localStorage.getItem('contacts');
 
-    if (savedClicks !== null) {
-      return JSON.parse(savedClicks);
-    }
-
-    return {
-      good: 0,
-      neutral: 0,
-      bad: 0,
-    };
+    return savedContacts !== null ? JSON.parse(savedContacts) : Contacts;
   });
+  const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    localStorage.setItem('click-count', JSON.stringify(clicks));
-  }, [clicks]);
-
-  const updateClicks = key => {
-    setClicks({
-      ...clicks,
-      [key]: clicks[key] + 1,
+  const addContact = newContact => {
+    setContacts(prevContacts => {
+      return [...prevContacts, newContact];
     });
   };
 
-  const totalFeedback = clicks.good + clicks.neutral + clicks.bad;
+  const deleteContact = contactId => {
+    setContacts(prevContacts => {
+      return prevContacts.filter(contact => contact.id !== contactId);
+    });
+  };
 
-  const totalPositiveFeedbacks = Math.round(
-    (clicks.good / totalFeedback) * 100
+  const visibleContact = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 
-  const resetClicks = () => {
-    setClicks({
-      good: 0,
-      neutral: 0,
-      bad: 0,
-    });
-  };
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   return (
     <section className={css.page}>
       <div className={css.wrapper}>
-        <Description />
-        <Options
-          clicks={updateClicks}
-          total={totalFeedback}
-          onClick={resetClicks}
-        />
-        {totalFeedback > 0 ? (
-          <Feedback
-            value={clicks}
-            totalFeedback={totalFeedback}
-            totalPositiveFeedbacks={totalPositiveFeedbacks}
-          />
-        ) : (
-          <Notification />
-        )}
+        <h1 className={css.title}>Phonebook</h1>
+        <ContactForm onAdd={addContact} />
+        <SearchBox value={filter} onChange={setFilter} />
+        <ContactList Contacts={visibleContact} onDelete={deleteContact} />
       </div>
     </section>
   );
