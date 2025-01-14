@@ -1,53 +1,95 @@
+import { fetchImages } from '../../../images-api.js';
 import { useEffect, useState } from 'react';
-import ContactList from '../ContactList/ContactList.jsx';
-import SearchBox from '../SearchBox/SearchBox.jsx';
 import css from './App.module.css';
-import ContactForm from '../ContactForm/ContactForm.jsx';
-// import { useEffect, useState } from 'react';
-
-const Contacts = [
-  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-];
+import SearchBar from '../SearchBar/SearchBar.jsx';
+import ImageGallery from '../ImageGallery/ImageGallery.jsx';
+import Loader from '../Loader/Loader.jsx';
+import ErrorMessage from '../ErrorMessage/ErrorMessage.jsx';
+import LoadMoreBtn from '../LoadMoreBtn/LoadMoreBtn.jsx';
+import ImageModal from '../ImageModal/ImageModal.jsx';
 
 export default function App() {
-  const [contacts, setContacts] = useState(() => {
-    const savedContacts = localStorage.getItem('contacts');
+  const [images, setImages] = useState([]);
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState('');
+  const [selectedImage, setSelectedImage] = useState('');
 
-    return savedContacts !== null ? JSON.parse(savedContacts) : Contacts;
-  });
-  const [filter, setFilter] = useState('');
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  const addContact = newContact => {
-    setContacts(prevContacts => {
-      return [...prevContacts, newContact];
-    });
+  const handleOpenModal = image => {
+    setSelectedImage(image);
+    setModalIsOpen(true);
   };
 
-  const deleteContact = contactId => {
-    setContacts(prevContacts => {
-      return prevContacts.filter(contact => contact.id !== contactId);
-    });
+  const closeModal = () => {
+    setModalIsOpen(false);
   };
 
-  const visibleContact = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  const handleSearch = newQuery => {
+    setQuery(newQuery);
+    setPage(1);
+    setImages([]);
+  };
 
   useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+    if (query === '') return;
+
+    async function getImages() {
+      try {
+        setError(false);
+        setIsLoading(true);
+        const data = await fetchImages(page, query);
+        setImages(prevImages => {
+          return [...prevImages, ...data];
+        });
+      } catch (error) {
+        setError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    getImages();
+  }, [page, query]);
+
+  const handleLoadMore = () => {
+    setPage(page + 1);
+  };
 
   return (
     <section className={css.page}>
       <div className={css.wrapper}>
-        <h1 className={css.title}>Phonebook</h1>
-        <ContactForm onAdd={addContact} />
-        <SearchBox value={filter} onChange={setFilter} />
-        <ContactList Contacts={visibleContact} onDelete={deleteContact} />
+        <h1>Search !</h1>
+        <SearchBar onSubmit={handleSearch} />
+        {images.length > 0 && (
+          <ImageGallery images={images} onClick={handleOpenModal} />
+        )}
+        {error && <ErrorMessage />}
+        {isLoading && <Loader />}
+        {images.length > 0 && !isLoading && (
+          <LoadMoreBtn onClick={handleLoadMore} />
+        )}
+        <ImageModal
+          onOpen={modalIsOpen}
+          onClose={closeModal}
+          image={selectedImage}
+        />
       </div>
     </section>
   );
 }
+
+// const handleSearch = async newQuery => {
+//   try {
+//     setError(false);
+//     setIsLoading(true);
+//     const data = await fetchImages(newQuery);
+//     setImages(data);
+//   } catch (error) {
+//     setError(true);
+//   } finally {
+//     setIsLoading(false);
+//   }
+// };
