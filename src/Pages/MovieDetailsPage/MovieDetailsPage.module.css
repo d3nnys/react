@@ -1,0 +1,27 @@
+.linkBack {
+  display: block;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: #bebebe;
+}
+
+.linkWrapper {
+  margin: 20px 0;
+}
+
+.infoWrapper {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.rightSideInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.overview {
+  max-width: 900px;
+}

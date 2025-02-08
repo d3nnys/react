@@ -1,0 +1,14 @@
+.link {
+  display: block;
+  width: fit-content;
+  padding: 10px;
+  color: white;
+  background-color: #7d7a7a;
+  border-radius: 15px;
+}
+
+.list {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 20px;
+}
