@@ -7,7 +7,7 @@
 }
 
 .linkWrapper {
-  margin: 20px 0;
+  margin-bottom: 10px;
 }
 
 .infoWrapper {
@@ -24,4 +24,25 @@
 
 .overview {
   max-width: 900px;
+}
+
+.list {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.link {
+  font-size: 18px;
+  font-weight: 500;
+  padding: 5px 10px;
+  outline: none;
+}
+
+.active {
+  color: whitesmoke;
+  padding: 5px 10px;
+  border: 0.5px solid transparent;
+  border-radius: 12px;
+  background-color: red;
 }

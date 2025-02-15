@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Link, NavLink, Outlet, useParams } from 'react-router-dom';
 import { getMovieId } from '../../movies-api.js';
 import css from './MovieDetailsPage.module.css';
+import clsx from 'clsx';
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
@@ -12,6 +13,10 @@ export default function MovieDetailsPage() {
 
   const baseURL = 'https://image.tmdb.org/t/p';
   const fileSize = '/w500';
+
+  const linkClass = ({ isActive }) => {
+    return clsx(css.link, isActive && css.active);
+  };
 
   useEffect(() => {
     async function getMovieById() {
@@ -31,7 +36,7 @@ export default function MovieDetailsPage() {
   }, [movieId]);
 
   return (
-    <div>
+    <>
       {loading && <p>Loading...</p>}
       {error && <p>Oops.. Sorry..</p>}
       <div className={css.linkWrapper}>
@@ -65,20 +70,20 @@ export default function MovieDetailsPage() {
         </div>
       )}
 
-      <ul>
+      <ul className={css.list}>
         <li>
-          <Link to="cast">
-            <b>Cast</b>
-          </Link>
+          <NavLink className={linkClass} to="cast">
+            Cast
+          </NavLink>
         </li>
         <li>
-          <Link to="reviews">
-            <b>Reviews</b>
-          </Link>
+          <NavLink className={linkClass} to="reviews">
+            Reviews
+          </NavLink>
         </li>
       </ul>
 
       <Outlet />
-    </div>
+    </>
   );
 }
