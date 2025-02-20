@@ -26,7 +26,6 @@ export default function HomePage() {
 
   return (
     <div>
-      <p>HomeMovies</p>
       {loading && <b>Loading movies...</b>}
       {movies.length > 0 && <MovieList movies={movies} />}
       {error && <p>Oops sorry</p>}

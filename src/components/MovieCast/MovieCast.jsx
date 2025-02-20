@@ -35,7 +35,10 @@ export default function MovieCast() {
         <ul className={css.list}>
           {cast.map(actor => (
             <li key={actor.id}>
-              <img src={`${baseURL}${fileSize}${actor.profile_path}`} />
+              <img
+                src={`${baseURL}${fileSize}${actor.profile_path}`}
+                alt={`${actor.name}`}
+              />
               <p>{actor.original_name}</p>
             </li>
           ))}

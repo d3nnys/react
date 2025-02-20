@@ -1,0 +1,21 @@
+.userWrapper {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.createdDate {
+  margin-bottom: 5px;
+}
+
+.content {
+  letter-spacing: 0.33;
+}
