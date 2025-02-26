@@ -1,8 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Link, NavLink, Outlet, useParams } from 'react-router-dom';
+import { Suspense, useEffect, useRef, useState } from 'react';
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useParams,
+} from 'react-router-dom';
 import { getMovieId } from '../../movies-api.js';
 import css from './MovieDetailsPage.module.css';
 import clsx from 'clsx';
+import Loader from '../../components/Loader/Loader.jsx';
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
@@ -10,6 +17,8 @@ export default function MovieDetailsPage() {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const location = useLocation();
+  const backLinkURLRef = useRef(location.state ?? '/');
 
   const baseURL = 'https://image.tmdb.org/t/p';
   const fileSize = '/w500';
@@ -37,13 +46,13 @@ export default function MovieDetailsPage() {
 
   return (
     <>
-      {loading && <p>Loading...</p>}
-      {error && <p>Oops.. Sorry..</p>}
       <div className={css.linkWrapper}>
-        <Link to="/" className={css.linkBack}>
-          Go Back
+        <Link to={backLinkURLRef.current} className={css.linkBack}>
+          ← Go Back
         </Link>
       </div>
+      {loading && <Loader />}
+      {error && <p>Oops.. Sorry..</p>}
 
       {movie && (
         <div>
@@ -83,7 +92,9 @@ export default function MovieDetailsPage() {
         </li>
       </ul>
 
-      <Outlet />
+      <Suspense fallback="WAIT!!">
+        <Outlet />
+      </Suspense>
     </>
   );
 }

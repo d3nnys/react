@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import css from './MovieCast.module.css';
 import { useParams } from 'react-router-dom';
 import { getCastMovieById } from '../../movies-api.js';
+import Loader from '../Loader/Loader.jsx';
 
 export default function MovieCast() {
   const { movieId } = useParams();
@@ -39,12 +40,12 @@ export default function MovieCast() {
                 src={`${baseURL}${fileSize}${actor.profile_path}`}
                 alt={`${actor.name}`}
               />
-              <p>{actor.original_name}</p>
+              <b>{actor.original_name}</b>
             </li>
           ))}
         </ul>
       )}
-      {loading && <p>Please wait..</p>}
+      {loading && <Loader />}
       {error && <p>Oops.. Sorry..</p>}
     </div>
   );

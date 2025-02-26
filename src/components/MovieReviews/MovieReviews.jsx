@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getReviewByMovieId } from '../../movies-api.js';
 import css from './MovieReviews.module.css';
+import Loader from '../Loader/Loader.jsx';
 
 export default function MovieReviews() {
   const { movieId } = useParams();
@@ -28,9 +29,9 @@ export default function MovieReviews() {
 
   return (
     <>
-      {loading && <b>Please wait...</b>}
+      {loading && <Loader />}
       {error && <b>Oops.. sorry..</b>}
-      {reviews.length > 0 && (
+      {reviews.length > 0 ? (
         <ul className={css.list}>
           {reviews.map(review => (
             <li key={review.id}>
@@ -39,12 +40,13 @@ export default function MovieReviews() {
                 <p>Rating: {review.author_details.rating}</p>
               </div>
               <p className={css.createdDate}>{review.created_at}</p>
-              {/* <p>{review.updated_at}</p> */}
-
               <p className={css.content}>{review.content}</p>
+              <hr className={css.hr} />
             </li>
           ))}
         </ul>
+      ) : (
+        <b>No reviews yet</b>
       )}
     </>
   );

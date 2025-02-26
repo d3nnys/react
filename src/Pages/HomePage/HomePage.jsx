@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import MovieList from '../../components/MovieList/MovieList.jsx';
 import { getMovies } from '../../movies-api.js';
+import Loader from '../../components/Loader/Loader.jsx';
 
 export default function HomePage() {
   const [movies, setMovies] = useState([]);
@@ -26,7 +27,7 @@ export default function HomePage() {
 
   return (
     <div>
-      {loading && <b>Loading movies...</b>}
+      {loading && <Loader />}
       {movies.length > 0 && <MovieList movies={movies} />}
       {error && <p>Oops sorry</p>}
     </div>

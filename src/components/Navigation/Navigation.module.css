@@ -12,3 +12,9 @@
   gap: 5px;
   margin-bottom: 10px;
 }
+
+.active {
+  background-color: #c2c2c2;
+  border: 1px solid black;
+  color: black;
+}

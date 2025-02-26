@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import css from './MoviesPage.module.css';
 import { getMovieBySearch } from '../../movies-api.js';
 import MovieList from '../../components/MovieList/MovieList.jsx';
+import Loader from '../../components/Loader/Loader.jsx';
 
 export default function MoviesPage() {
   const [movies, setMovies] = useState([]);
@@ -52,7 +53,7 @@ export default function MoviesPage() {
         <button type="submit">Search</button>
       </form>
       {movies.length > 0 && <MovieList movies={movies} />}
-      {loading && <p>Please wait..</p>}
+      {loading && <Loader />}
       {error && <p>Oops.. Error..</p>}
     </div>
   );
