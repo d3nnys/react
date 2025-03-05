@@ -3,11 +3,6 @@ import axios from 'axios';
 axios.defaults.baseURL = 'https://api.themoviedb.org';
 
 const options = {
-  // params: {
-  //   include_adult: false,
-  //   language: 'en-US',
-  //   page: 1,
-  // },
   headers: {
     accept: 'application/json',
     Authorization:
@@ -20,10 +15,14 @@ export const getMovies = async () => {
   return response.data;
 };
 
-export const getMovieBySearch = async ({ query, page }) => {
-  const response = await axios.get('/3/search/movie', options, {
-    query: query,
-    page: page,
+export const getMovieBySearch = async (query, page) => {
+  const response = await axios.get('/3/search/movie', {
+    ...options,
+    params: {
+      query: query,
+      page: page,
+      language: 'en-US',
+    },
   });
   return response.data;
 };

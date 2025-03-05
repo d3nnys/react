@@ -3,54 +3,55 @@ import css from './MoviesPage.module.css';
 import { getMovieBySearch } from '../../movies-api.js';
 import MovieList from '../../components/MovieList/MovieList.jsx';
 import Loader from '../../components/Loader/Loader.jsx';
+import { useSearchParams } from 'react-router-dom';
 
 export default function MoviesPage() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [page, setPage] = useState(1);
 
-  // useEffect(() => {
-  //   async function getMovieSearch() {
-  //     try {
-  //       setError(false);
-  //       setLoading(true);
-  //       const data = await getMovieBySearch();
-  //       setMovies(data);
-  //     } catch (error) {
-  //       setError(true);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isNewQuery = searchParams.get('query') ?? '';
 
-  //   getMovieSearch();
-  // }, []);
+  useEffect(() => {
+    if (!isNewQuery) return;
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
-
-    const form = evt.currentTarget;
-    const querySearch = form.elements.query.value.trim();
-    form.reset();
-    if (!querySearch) return;
-
-    try {
-      setError(false);
-      setLoading(true);
-      const data = getMovieBySearch(querySearch);
-      setMovies(data);
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
+    async function getMovieSearch() {
+      try {
+        setError(false);
+        setLoading(true);
+        const data = await getMovieBySearch(isNewQuery, page);
+        setMovies(data.results);
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     }
+
+    getMovieSearch();
+  }, [isNewQuery, page]);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    const inputQuery = event.target.elements.query.value.trim();
+    if (!inputQuery) return;
+    searchParams.set('query', inputQuery);
+    setSearchParams(searchParams);
+
+    setMovies([]);
+    setPage(1);
+    event.target.reset();
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="query" />
-        <button type="submit">Search</button>
+      <form className={css.form} onSubmit={handleSubmit}>
+        <input className={css.input} type="text" name="query" autoFocus />
+        <button className={css.btn} type="submit">
+          Search
+        </button>
       </form>
       {movies.length > 0 && <MovieList movies={movies} />}
       {loading && <Loader />}
