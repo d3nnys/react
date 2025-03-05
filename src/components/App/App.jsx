@@ -1,95 +1,30 @@
-import { fetchImages } from '../../../images-api.js';
-import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { lazy } from 'react';
 import css from './App.module.css';
-import SearchBar from '../SearchBar/SearchBar.jsx';
-import ImageGallery from '../ImageGallery/ImageGallery.jsx';
-import Loader from '../Loader/Loader.jsx';
-import ErrorMessage from '../ErrorMessage/ErrorMessage.jsx';
-import LoadMoreBtn from '../LoadMoreBtn/LoadMoreBtn.jsx';
-import ImageModal from '../ImageModal/ImageModal.jsx';
+import Layout from '../Layout/Layout.jsx';
+const NotFoundPage = lazy(() =>
+  import('../../Pages/NotFoundPage/NotFoundPage.jsx')
+);
+const HomePage = lazy(() => import('../../Pages/HomePage/HomePage.jsx'));
+const MoviesPage = lazy(() => import('../../Pages/MoviesPage/MoviesPage.jsx'));
+const MovieDetailsPage = lazy(() =>
+  import('../../Pages/MovieDetailsPage/MovieDetailsPage.jsx')
+);
+const MovieCast = lazy(() => import('../MovieCast/MovieCast.jsx'));
+const MovieReviews = lazy(() => import('../MovieReviews/MovieReviews.jsx'));
 
 export default function App() {
-  const [images, setImages] = useState([]);
-  const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const [query, setQuery] = useState('');
-  const [selectedImage, setSelectedImage] = useState('');
-
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const handleOpenModal = image => {
-    setSelectedImage(image);
-    setModalIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-  const handleSearch = newQuery => {
-    setQuery(newQuery);
-    setPage(1);
-    setImages([]);
-  };
-
-  useEffect(() => {
-    if (query === '') return;
-
-    async function getImages() {
-      try {
-        setError(false);
-        setIsLoading(true);
-        const data = await fetchImages(page, query);
-        setImages(prevImages => {
-          return [...prevImages, ...data];
-        });
-      } catch (error) {
-        setError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    getImages();
-  }, [page, query]);
-
-  const handleLoadMore = () => {
-    setPage(page + 1);
-  };
-
   return (
-    <section className={css.page}>
-      <div className={css.wrapper}>
-        <h1>Search !</h1>
-        <SearchBar onSubmit={handleSearch} />
-        {images.length > 0 && (
-          <ImageGallery images={images} onClick={handleOpenModal} />
-        )}
-        {error && <ErrorMessage />}
-        {isLoading && <Loader />}
-        {images.length > 0 && !isLoading && (
-          <LoadMoreBtn onClick={handleLoadMore} />
-        )}
-        <ImageModal
-          onOpen={modalIsOpen}
-          onClose={closeModal}
-          image={selectedImage}
-        />
-      </div>
-    </section>
+    <Layout className={css.page}>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/movies" element={<MoviesPage />} />
+        <Route path="/movies/:movieId" element={<MovieDetailsPage />}>
+          <Route path="cast" element={<MovieCast />} />
+          <Route path="reviews" element={<MovieReviews />} />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Layout>
   );
 }
-
-// const handleSearch = async newQuery => {
-//   try {
-//     setError(false);
-//     setIsLoading(true);
-//     const data = await fetchImages(newQuery);
-//     setImages(data);
-//   } catch (error) {
-//     setError(true);
-//   } finally {
-//     setIsLoading(false);
-//   }
-// };

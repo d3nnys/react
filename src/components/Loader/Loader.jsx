@@ -1,17 +1,14 @@
-import { RotatingLines } from 'react-loader-spinner';
+import { ClockLoader } from 'react-spinners';
+import css from './Loader.module.css';
 
-export default function Loader() {
+const Loader = () => {
   return (
-    <RotatingLines
-      visible={true}
-      height="96"
-      width="96"
-      color="black"
-      strokeWidth="5"
-      animationDuration="0.75"
-      ariaLabel="rotating-lines-loading"
-      wrapperStyle={{}}
-      wrapperClass=""
-    />
+    <div className={css.overlay}>
+      <div className={css.loader}>
+        <ClockLoader loading size={100} color="white" />
+      </div>
+    </div>
   );
-}
+};
+
+export default Loader;
