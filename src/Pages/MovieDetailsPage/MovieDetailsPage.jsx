@@ -62,7 +62,7 @@ export default function MovieDetailsPage() {
             </div>
             <div className={css.rightSideInfo}>
               <p>
-                <b>Name:</b> {movie.original_title}
+                <b>Name:</b> {movie.original_title} ({movie.release_date})
               </p>
               <p>
                 <b>Genres:</b>{' '}

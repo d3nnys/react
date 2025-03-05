@@ -36,7 +36,7 @@ export default function MovieReviews() {
           {reviews.map(review => (
             <li key={review.id}>
               <div className={css.userWrapper}>
-                <b>Author: {review.author_details.username}</b>
+                <b>{review.author_details.username}</b>
                 <p>Rating: {review.author_details.rating}</p>
               </div>
               <p className={css.createdDate}>{review.created_at}</p>
