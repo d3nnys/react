@@ -65,6 +65,9 @@ export default function MovieDetailsPage() {
                 <b>Name:</b> {movie.original_title} ({movie.release_date})
               </p>
               <p>
+                <b>Budget:</b> {movie.budget} <b>Revenue:</b> {movie.revenue}
+              </p>
+              <p>
                 <b>Genres:</b>{' '}
                 {movie.genres.map(genre => genre.name).join(', ')}
               </p>
@@ -72,7 +75,7 @@ export default function MovieDetailsPage() {
                 <b>Overview:</b> {movie.overview}
               </p>
               <p>
-                <b>Rating:</b> {movie.popularity}
+                <b>Rating:</b> {movie.vote_average} ({movie.vote_count})
               </p>
             </div>
           </div>
