@@ -1,0 +1,48 @@
+.linkBack {
+  display: block;
+  width: fit-content;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: #bebebe;
+}
+
+.linkWrapper {
+  margin-bottom: 10px;
+}
+
+.infoWrapper {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.rightSideInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.overview {
+  max-width: 900px;
+}
+
+.list {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.link {
+  font-size: 18px;
+  font-weight: 500;
+  padding: 5px 10px;
+  outline: none;
+}
+
+.active {
+  color: whitesmoke;
+  padding: 5px 10px;
+  border: 0.5px solid transparent;
+  border-radius: 12px;
+  background-color: red;
+}
