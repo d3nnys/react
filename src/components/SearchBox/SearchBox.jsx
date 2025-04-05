@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { setFilter } from '../../redux/filtersSlice.js';
+import { selectNameFilter, setFilter } from '../../redux/filtersSlice.js';
 
 export default function SearchBox() {
   const dispatch = useDispatch();
-  const inputValue = useSelector(state => state.filters.name);
+  const inputValue = useSelector(selectNameFilter);
   const handleChange = event => {
     dispatch(setFilter(event.target.value));
   };
