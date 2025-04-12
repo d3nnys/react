@@ -3,20 +3,18 @@ import axios from 'axios';
 
 axios.defaults.baseURL = 'https://connections-api.goit.global/';
 
-// axios.defaults.headers.common['Authorization'] =
-//   'Bearer ${response.data.token}';
-
 const setAuthHeaders = token => {
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 };
 
-const clearAuthHeaders = (axios.defaults.headers.common['Authorization'] = '');
+const clearAuthHeaders = () =>
+  (axios.defaults.headers.common['Authorization'] = '');
 
 export const register = createAsyncThunk(
-  'registerUser',
+  'auth/register',
   async (newUser, thunkAPI) => {
     try {
-      const response = await axios.post('auth/register', newUser);
+      const response = await axios.post('/users/signup', newUser);
       setAuthHeaders(response.data.token);
       return response.data;
     } catch (error) {
@@ -26,10 +24,10 @@ export const register = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-  'loginUser',
+  'auth/login',
   async (infoUser, thunkAPI) => {
     try {
-      const response = await axios.post('auth/login', infoUser);
+      const response = await axios.post('/users/login', infoUser);
       setAuthHeaders(response.data.token);
       return response.data;
     } catch (error) {
@@ -40,7 +38,7 @@ export const login = createAsyncThunk(
 
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
   try {
-    await axios.post('auth/logout');
+    await axios.post('/users/logout');
     clearAuthHeaders();
   } catch (error) {
     return thunkAPI.rejectWithValue(error.message);
@@ -51,18 +49,18 @@ export const refresh = createAsyncThunk(
   'auth/refresh',
   async (_, thunkAPI) => {
     const reduxState = thunkAPI.getState();
-    const savedToken = reduxState.auth.token;
-    setAuthHeaders(savedToken);
+    setAuthHeaders(reduxState.auth.token);
 
-    const response = await axios.get('users/refresh');
+    const response = await axios.get('/users/current');
     return response.data;
   },
   {
     condition(_, thunkAPI) {
       const reduxState = thunkAPI.getState();
-      const savedToken = reduxState.auth.token;
 
-      return savedToken !== null;
+      return reduxState.auth.token !== null;
     },
   }
 );
+
+//  sfsdfsd@mail.com

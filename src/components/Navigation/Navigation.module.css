@@ -1,0 +1,12 @@
+.link {
+  display: block;
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}

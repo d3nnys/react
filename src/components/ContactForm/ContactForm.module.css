@@ -6,6 +6,9 @@
   border: 1px solid black;
   border-radius: 8px;
   padding: 20px;
+  width: fit-content;
+  margin: 0 auto;
+  margin-bottom: 30px;
 }
 
 .inputWrapper {
