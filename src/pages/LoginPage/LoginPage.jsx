@@ -18,7 +18,6 @@ const LoginSchema = Yup.object().shape({
 export default function LoginPage() {
   const dispatch = useDispatch();
   const isRefreshing = useSelector(selectIsRefreshing);
-  const user = useSelector(selectUser);
 
   const initialValues = {
     email: 'sfsdfsd@mail.com',

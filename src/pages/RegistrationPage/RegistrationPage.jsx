@@ -19,7 +19,6 @@ const LoginSchema = Yup.object().shape({
 export default function RegistrationPage() {
   const dispatch = useDispatch();
   const isRefreshing = useSelector(selectIsRefreshing);
-  const user = useSelector(selectUser);
 
   const initialValues = {
     name: '',
