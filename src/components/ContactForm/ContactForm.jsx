@@ -3,7 +3,8 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
-import { addContact } from '../../redux/contactsOps.js';
+import { addContact } from '../../redux/contacts/operations.js';
+import toast from 'react-hot-toast';
 
 const UserSchema = Yup.object().shape({
   name: Yup.string()
@@ -22,12 +23,18 @@ export default function ContactForm() {
   };
 
   const handleSubmit = (values, actions) => {
-    dispatch(addContact(values));
+    dispatch(addContact(values))
+      .unwrap()
+      .then(() => {
+        toast.success(`Added new contact`);
+      })
+      .catch(() => {
+        toast.error('Something went wrong, please try again later');
+      });
 
     actions.resetForm();
   };
 
-  // const idItem = nanoid();
   const nameId = nanoid();
   const numberId = nanoid();
 
@@ -38,17 +45,26 @@ export default function ContactForm() {
       onSubmit={handleSubmit}
     >
       <Form className={css.form}>
-        <div className={css.inputWrapper}>
-          <label htmlFor={nameId}>Name:</label>
-          <Field type="text" name="name" id={nameId} />
+        <div className={css.fieldWrapper}>
+          <label className={css.label} htmlFor={nameId}>
+            Name:
+          </label>
+          <Field className={css.input} type="text" name="name" id={nameId} />
           <ErrorMessage className={css.error} name="name" component="span" />
         </div>
-        <div className={css.inputWrapper}>
-          <label htmlFor={numberId}>Number:</label>
-          <Field name="number" id={numberId} placeholder="000-00-00" />
+        <div className={css.fieldWrapper}>
+          <label className={css.label} htmlFor={numberId}>
+            Number:
+          </label>
+          <Field
+            className={css.input}
+            name="number"
+            id={numberId}
+            placeholder="000-00-00"
+          />
           <ErrorMessage className={css.error} name="number" component="span" />
         </div>
-        <button className={css.button} type="submit">
+        <button className={css.btn} type="submit">
           Add contact
         </button>
       </Form>

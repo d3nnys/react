@@ -1,0 +1,17 @@
+.link {
+  display: block;
+  border: 1px solid black;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.active {
+  background-color: #2e2b2b;
+  color: #ffffff;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
