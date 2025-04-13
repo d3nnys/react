@@ -1,3 +1,16 @@
 .name {
   margin-bottom: 5px;
 }
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: 1px solid black;
+  border-radius: 12px;
+  background-color: transparent;
+  padding: 6px 10px;
+  width: fit-content;
+  min-width: 5px;
+}

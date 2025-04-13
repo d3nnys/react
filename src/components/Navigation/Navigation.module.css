@@ -5,6 +5,11 @@
   padding: 8px;
 }
 
+.active {
+  background-color: #2e2b2b;
+  color: #ffffff;
+}
+
 .list {
   display: flex;
   align-items: center;

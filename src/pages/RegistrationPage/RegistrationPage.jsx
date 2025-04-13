@@ -1,8 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../../redux/auth/operations.js';
 import * as Yup from 'yup';
 import css from './RegistrationPage.module.css';
+import { selectIsRefreshing, selectUser } from '../../redux/auth/selectors.js';
+import Loader from '../../components/Loader/Loader.jsx';
+import toast from 'react-hot-toast';
 
 const LoginSchema = Yup.object().shape({
   name: Yup.string().min(3).max(36).required('Us required field!'),
@@ -15,6 +18,8 @@ const LoginSchema = Yup.object().shape({
 
 export default function RegistrationPage() {
   const dispatch = useDispatch();
+  const isRefreshing = useSelector(selectIsRefreshing);
+  const user = useSelector(selectUser);
 
   const initialValues = {
     name: '',
@@ -23,11 +28,20 @@ export default function RegistrationPage() {
   };
 
   const handleSubmit = (values, action) => {
-    dispatch(register(values));
+    dispatch(register(values))
+      .unwrap()
+      .then(user => {
+        toast.success(`Welcome to the club, ${user.user.name}`);
+      })
+      .catch(() => {
+        toast.error('Something went wrong, please try again later');
+      });
     action.resetForm();
   };
 
-  return (
+  return isRefreshing ? (
+    <Loader />
+  ) : (
     <>
       <p className={css.text}>Register</p>
       <Formik

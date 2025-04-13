@@ -1,8 +1,11 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/auth/operations.js';
 import * as Yup from 'yup';
 import css from './LoginPage.module.css';
+import { selectIsRefreshing, selectUser } from '../../redux/auth/selectors.js';
+import Loader from '../../components/Loader/Loader.jsx';
+import toast from 'react-hot-toast';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email().required('Is required field'),
@@ -14,6 +17,8 @@ const LoginSchema = Yup.object().shape({
 
 export default function LoginPage() {
   const dispatch = useDispatch();
+  const isRefreshing = useSelector(selectIsRefreshing);
+  const user = useSelector(selectUser);
 
   const initialValues = {
     email: 'sfsdfsd@mail.com',
@@ -21,11 +26,20 @@ export default function LoginPage() {
   };
 
   const handleSubmit = (values, action) => {
-    dispatch(login(values));
+    dispatch(login(values))
+      .unwrap()
+      .then(user => {
+        toast.success(`Welcome back, ${user.user.name}`);
+      })
+      .catch(() => {
+        toast.error('Something went wrong, please try again later');
+      });
     action.resetForm();
   };
 
-  return (
+  return isRefreshing ? (
+    <Loader />
+  ) : (
     <>
       <p className={css.text}>Log in</p>
       <Formik

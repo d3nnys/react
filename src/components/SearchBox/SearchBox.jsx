@@ -11,8 +11,13 @@ export default function SearchBox() {
   };
   return (
     <div className={css.wrapper}>
-      <p>Find contacts by name</p>
-      <input type="text" value={inputValue} onChange={handleChange} />
+      <p className={css.text}>Find contacts by name</p>
+      <input
+        className={css.input}
+        type="text"
+        value={inputValue}
+        onChange={handleChange}
+      />
     </div>
   );
 }

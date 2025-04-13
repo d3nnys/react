@@ -1,30 +1,56 @@
 .form {
   display: flex;
-  align-items: center;
   flex-direction: column;
   gap: 20px;
+  margin: 0 auto 30px;
   border: 1px solid black;
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: 12px;
+  padding: 20px 25px;
   width: fit-content;
-  margin: 0 auto;
-  margin-bottom: 30px;
 }
 
-.inputWrapper {
+.fieldWrapper {
   position: relative;
   display: flex;
   flex-direction: column;
+  gap: 2px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  border: 1px solid black;
+  border-radius: 12px;
+  background-color: transparent;
+  margin-top: 15px;
+  padding: 6px 10px;
+  width: fit-content;
+  min-width: 20px;
+  align-self: center;
 }
 
 .error {
   position: absolute;
-  top: 42px;
-  left: 0;
+  top: 50px;
+  left: 11px;
   color: red;
+  font-size: 13px;
 }
 
-.button {
-  margin-top: 15px;
-  max-width: 70%;
+.input {
+  outline: none;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 4px 10px;
+}
+
+.label {
+  margin-left: 6px;
+}
+
+.text {
+  font-size: 40px;
+  margin-bottom: 30px;
 }

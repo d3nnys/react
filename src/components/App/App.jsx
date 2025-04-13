@@ -1,12 +1,13 @@
 import css from './App.module.css';
-import { useSelector } from 'react-redux';
-import { lazy } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { lazy, useEffect } from 'react';
 import RestrictedRoute from '../RestrictedRoute/RestrictedRoute.jsx';
 import Layout from '../Layout/Layout.jsx';
 import { Route, Routes } from 'react-router-dom';
 import { selectIsRefreshing } from '../../redux/auth/selectors.js';
 import Loader from '../Loader/Loader.jsx';
 import PrivateRoute from '../PrivateRoute/PrivateRoute.jsx';
+import { refresh } from '../../redux/auth/operations.js';
 const HomePage = lazy(() => import('../../pages/HomePage/HomePage.jsx'));
 const RegistrationPage = lazy(() =>
   import('../../pages/RegistrationPage/RegistrationPage.jsx')
@@ -18,6 +19,11 @@ const ContactsPage = lazy(() =>
 
 export default function App() {
   const isRefreshing = useSelector(selectIsRefreshing);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(refresh());
+  }, [dispatch]);
 
   return isRefreshing ? (
     <Loader />
