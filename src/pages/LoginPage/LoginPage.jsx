@@ -20,8 +20,8 @@ export default function LoginPage() {
   const isRefreshing = useSelector(selectIsRefreshing);
 
   const initialValues = {
-    email: 'sfsdfsd@mail.com',
-    password: 'sfsdfsd@mail.com',
+    email: '',
+    password: '',
   };
 
   const handleSubmit = (values, action) => {
